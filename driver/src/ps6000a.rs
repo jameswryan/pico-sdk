@@ -122,7 +122,7 @@ impl PicoDriver for PS6000ADriver {
         PicoStatus::from(unsafe {
             self.bindings.ps6000aGetAdcLimits(
                 handle,
-                enPicoDeviceResolution_PICO_DR_12BIT,
+                enPicoDeviceResolution_PICO_DR_8BIT,
                 &mut min_value,
                 &mut max_value,
             )
@@ -222,10 +222,7 @@ impl PicoDriver for PS6000ADriver {
         sample_config: &SampleConfig,
         enabled_channels: u8,
     ) -> PicoResult<SampleConfig> {
-        let resolution = match enabled_channels {
-            1 | 2 => enPicoDeviceResolution_PICO_DR_12BIT,
-            _ => enPicoDeviceResolution_PICO_DR_10BIT,
-        };
+        let resolution = enPicoDeviceResolution_PICO_DR_8BIT;
 
         let status = PicoStatus::from(unsafe {
             self.bindings.ps6000aSetDeviceResolution(handle, resolution)
